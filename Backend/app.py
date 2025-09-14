@@ -84,8 +84,6 @@ def predict_user_segment(data: UserInput) -> dict:
 
 @app.post("/ai")
 async def get_strategy(data: CustomerInfo):
-    # Convert string back to dict if you want structured input
-    # Or just pass the raw string into your prompt
     try:
         input_lines = data.cust_info.split("\n")
         input_data = {}
@@ -94,7 +92,15 @@ async def get_strategy(data: CustomerInfo):
                 k, v = line.split(":", 1)
                 input_data[k.strip()] = v.strip()
 
-        strategy = generate_strategy(input_data)
+        # Get the predicted segment first
+        try:
+            label, name = predict_segment(input_data)
+            predicted_segment_info = f"{int(label)} - {name}"
+        except:
+            predicted_segment_info = None
+
+        # Generate strategy with segment info
+        strategy = generate_strategy(input_data, predicted_segment_info)
         return {"strategy": strategy}
     except Exception as e:
         return {"error": str(e)}

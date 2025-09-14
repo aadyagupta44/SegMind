@@ -1,21 +1,20 @@
-# Backend (FastAPI + ML)
-uvicorn==0.25.0
-fastapi==0.106.0
-pydantic==2.5.3
-scikit-learn==1.3.2
-gemini-api==0.1.6
-python-dotenv==1.0.0
+# Backend
+uvicorn
+fastapi
+pydantic
+scikit-learn
+python-dotenv
 
-# HuggingFace
+# HuggingFace model
 transformers
 huggingface-hub
-torch   # or tensorflow if you prefer, but SmolLM3-3B usually uses PyTorch
+torch
 
 # Common
-pandas==2.1.4
+pandas
 numpy
 
-# Frontend (Streamlit)
+# Frontend
 streamlit
 requests
 matplotlib

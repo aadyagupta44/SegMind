@@ -23,29 +23,37 @@ client = InferenceClient(
 
 
 # Define the marketing strategy prompt template
-def build_prompt(customer_info):
-    return f"""
-You are a creative brand strategist. Based on the following customer information,
-predict the customer segment and recommend the next marketing strategy. 
+def build_prompt(customer_info, predicted_segment_info=None):
+    base_prompt = f"""
+You are a creative brand strategist. Based on the following customer information and PREDICTED SEGMENT, recommend the next marketing strategy.
 
-Do NOT include internal reasoning, analysis, or <think> sections.  
+Do NOT predict the segment yourself. Use the provided segment information.
+
 Only output the final structured response in the format below.
 
 Customer Information:
 {customer_info}
-
+"""
+    
+    if predicted_segment_info:
+        base_prompt += f"""
+PREDICTED SEGMENT (DO NOT CHANGE THIS): {predicted_segment_info}
+"""
+    
+    base_prompt += """
 Your Response:
-* Predicted Segment:
+* Predicted Segment: [Use the provided segment above]
 * Next Marketing Strategy (explained step by step):
 """
+    return base_prompt
 
-def generate_strategy(input_data):
+def generate_strategy(input_data, predicted_segment_info=None):
     # Convert input dict into readable customer info string
     customer_info = "\n".join([f"{k}: {v}" for k, v in input_data.items()])
-
-    # Build structured prompt
-    prompt = build_prompt(customer_info)
     
+    # Build structured prompt with segment info
+    prompt = build_prompt(customer_info, predicted_segment_info)
+        
     try:
         completion = client.chat.completions.create(
             model="HuggingFaceTB/SmolLM3-3B",
@@ -56,7 +64,6 @@ def generate_strategy(input_data):
     except Exception as e:
         print("Error in generate_strategy:", e)
         return f"Error generating strategy: {e}"
-
    
 
 # # Example usage

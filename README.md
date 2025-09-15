@@ -105,5 +105,5 @@ pip install scikit-learn pandas numpy transformers torch
 
 
  # Contact
-- Aadya GUpta - aadyagupta.ag01@gmail.com
+- Aadya Gupta - aadyagupta.ag01@gmail.com
 - Project Link: https://github.com/aadyagupta44/segmind
